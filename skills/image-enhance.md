@@ -1,0 +1,175 @@
+# Image Enhancement Skill — Interior Moderna
+
+This skill takes a basic AI image prompt (or describes a product) and rewrites it into a prompt that produces expert-level, gallery-quality product photography — eliminating the flat, synthetic "AI slop" look.
+
+---
+
+## When to Use
+- Generating product listing photos via Google AI Studio / Gemini
+- Creating lifestyle/room-setting shots for Interior Moderna products
+- Rewriting a weak image prompt before sending to any AI image generator
+- Improving an existing AI-generated image that looks generic
+
+---
+
+## The Enhancement Process
+
+### Step 1 — Diagnose What's Wrong
+
+When given an image prompt or a product to photograph, first identify the "AI slop" failure modes:
+
+**Common AI slop signals:**
+- Generic, even lighting (no shadows, no depth)
+- No specific time of day or light source named
+- No camera/lens specification
+- No defined color grade or mood
+- Background described as "modern interior" or "clean white" (too vague)
+- No texture detail on the product
+- No human element or scale reference (where applicable)
+- No art direction for the exact feel
+- Prompt reads like a product description, not a photo brief
+
+### Step 2 — Rewrite as a Professional Photo Brief
+
+Transform the prompt using this framework. Every element must be SPECIFIC:
+
+**Photography Fundamentals:**
+- Camera: `Hasselblad X2D 100C`, `Sony A7R V`, or `Phase One IQ4 150MP`
+- Lens: `90mm macro`, `85mm f/1.4`, `50mm f/2`
+- Aperture: specify (f/2.8 for soft background, f/8 for product sharpness)
+- ISO: low (100-400) for clean, noise-free result
+
+**Light:**
+- Source: `north-facing window light`, `single softbox camera left`, `morning golden hour raking across surface`
+- Quality: `soft diffused`, `hard directional with defined shadow`, `halo rim light from behind`
+- Color temperature: `5500K daylight`, `3200K warm tungsten`
+- Shadows: `long shadow casting left at 30 degrees`, `soft shadow pool beneath`
+
+**Set / Environment:**
+- Surface: `matte white Italian marble slab`, `raw concrete with micro-texture`, `sand-blasted oak shelf`
+- Background: `tonal gradient from warm ecru to deep charcoal`, `architectural void — near-black negative space`, `bleached linen panel`
+- Depth of field: `shallow — background dissolves at f/1.8`
+- Styling: `single prop — architectural object only`, `minimal negative space, centered`
+
+**Color Grade / Film Style:**
+- `Muted earth tones, lifted blacks` (editorial luxury feel)
+- `High key with soft blow-out whites` (gallery clean)
+- `Desaturated with warm midtones — like a Kinfolk editorial`
+- `Deep shadow, rich blacks — fashion editorial`
+
+**Mood Reference:**
+- Match Interior Moderna brand: `quiet luxury`, `museum-grade stillness`, `architectural precision`
+- Anti-references: no stock-photo brightness, no symmetrical perfection, no gradient backgrounds, no lens flares
+
+### Step 3 — Write the Final Prompt
+
+**Format for Google AI Studio / Gemini:**
+
+```
+[PRODUCT DESCRIPTION]
+[CAMERA + LENS]
+[APERTURE + ISO]
+[LIGHT SOURCE + QUALITY + COLOR TEMP]
+[SURFACE + BACKGROUND]
+[DEPTH OF FIELD]
+[COLOR GRADE]
+[MOOD + REFERENCES]
+[NEGATIVE PROMPTS: no watermarks, no text, no people, no lens flare, not stock photo, not symmetrical, not CGI render]
+```
+
+**Example transformation:**
+
+Before (AI slop):
+> "Modern wall art piece in a contemporary living room, professional product photography, clean white background"
+
+After (expert-level):
+> "Abstract sculptural wall panel in charcoal and raw concrete finish. Shot with Hasselblad X2D 100C, 90mm macro lens, f/5.6, ISO 200. Single north-facing window light, soft diffused, 5500K daylight, casting a long precise shadow at 45 degrees across a matte white Italian marble surface. Background: tonal gradient from warm white to deep warm gray architectural void. Shallow depth — front edge in razor focus, sides dissolving. Color grade: muted earth tones, lifted blacks, no saturation. Mood: museum vitrine, gallery still life, Kinfolk editorial. Negative prompts: no text, no people, no stock photo look, no lens flare, no symmetrical composition."
+
+---
+
+## Category Presets
+
+Apply these based on product category:
+
+### Wall Art / Sculptures
+- Surface: matte concrete, linen, or raw plaster
+- Light: single directional source, long cast shadow
+- Angle: slight off-axis (15 degree tilt) — not perfectly flat
+- Background: warm architectural void or tonal fog
+
+### Mirrors
+- Light: key light from camera-left at 45 degrees, subtle rim from behind
+- Strategy: show partial reflection of a beautiful interior element (window, lamp)
+- Surface: dark polished stone or warm bleached oak console
+
+### Lighting / Lamps
+- Always photograph ILLUMINATED — show actual light emission
+- Shoot in ambient darkness or deep shadow so light pool is visible
+- Color temp of emitted light: specify warm (2700K) vs cool (4000K)
+- Shoot from slightly below or at product height, never from above
+
+### Furniture
+- Shot from 30 degree angle showing form and depth
+- Single strong side light to show material texture
+- Scale reference: abstract architectural element nearby (not a person)
+
+### Lifestyle / Room Setting
+- Full interior scene with one hero product in foreground
+- Style: editorial interior, not "perfect show home"
+
+---
+
+## Output Format
+
+When rewriting a prompt, output:
+
+```
+ORIGINAL PROMPT:
+[paste original]
+
+DIAGNOSIS:
+[2-3 bullet points on why it produces AI slop]
+
+ENHANCED PROMPT (Google AI Studio):
+[full rewritten prompt]
+
+SUGGESTED VARIATIONS:
+1. [lighter/daytime version]
+2. [darker/evening version]
+3. [close-up detail version]
+```
+
+---
+
+## Critical: Structural Anchoring (Prevents Mood Bleed)
+
+When using reference images with Gemini, **soft/warm scene moods can bleed into how the model renders the product itself** — making structured frames look blobby, wavy, or organic when they shouldn't be.
+
+**Always include explicit structural constraints about the product in every prompt**, regardless of the room mood:
+- Describe key geometric features: seam lines, angles, symmetry, proportions
+- State what the product is NOT: "NOT wavy, NOT blobby, NOT organic/free-form"
+- These constraints anchor the model so a "serene bedroom" prompt doesn't turn a structured chrome mirror frame into a melted blob
+
+**Always include real-world dimensions** (e.g. "85cm / 33.5 inches diameter") so the model scales the product correctly relative to furniture, doorways, and people-height references in the scene.
+
+---
+
+## Image Output Rules (NON-NEGOTIABLE)
+
+- **All generated images MUST be square (1:1 aspect ratio)** for product listings
+- **All generated images MUST be saved as WebP**, not PNG or JPEG
+- **Target file size: 300-800 KB** — optimized for fast page loads
+- Conversion pipeline: generate as PNG from API, then convert to WebP with `tools/image_converter.py`
+- Max dimensions: 2400x2400px (downscale larger images)
+- **Never upload raw PNGs (1-3MB)** — always convert first
+
+---
+
+## Notes
+- Always specify negative prompts at the end (no watermarks, no text, no stock photo look)
+- For Google AI Studio: paste the enhanced prompt directly into Imagen 3
+- After generation: if image still looks flat, the lighting descriptor needs to be more specific — tighten the shadow angle and surface material
+- **Always feed actual product reference photos** to Gemini — never rely on text-only descriptions of the product
+- **Always confirm product dimensions before generating.** If the user hasn't provided dimensions, ASK before writing any prompts
+- **Always apply EXIF rotation when loading reference photos** (`PIL.ImageOps.exif_transpose(img)`). Phone photos have rotation metadata that PIL does NOT apply by default
+- **Never include reference photos that show the product in the wrong orientation**

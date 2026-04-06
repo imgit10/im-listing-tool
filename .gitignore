@@ -1,0 +1,15 @@
+# Credentials
+.env
+
+# Generated outputs (keep structure, ignore contents)
+outputs/*
+!outputs/.gitkeep
+
+# Photos (keep structure, ignore contents)
+photos/*
+!photos/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
