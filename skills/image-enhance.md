@@ -173,3 +173,33 @@ When using reference images with Gemini, **soft/warm scene moods can bleed into 
 - **Always confirm product dimensions before generating.** If the user hasn't provided dimensions, ASK before writing any prompts
 - **Always apply EXIF rotation when loading reference photos** (`PIL.ImageOps.exif_transpose(img)`). Phone photos have rotation metadata that PIL does NOT apply by default
 - **Never include reference photos that show the product in the wrong orientation**
+
+---
+
+## Batch Image Editing (Image-in → Image-out)
+
+Use `tools/edit_images.py` to apply an edit to a whole folder of product photos using Gemini's image editing model (`gemini-2.5-flash-image`).
+
+```bash
+python3 tools/edit_images.py \
+  --input  photos/my-product/originals \
+  --output photos/my-product/edited \
+  --prompt "Your edit instruction here"
+```
+
+### Proven prompt patterns
+
+**Matte finish (remove gloss):**
+> "Make the lamp surface COMPLETELY MATTE and non-reflective. The color MUST stay deep black — NOT grey, NOT beige. Remove all glossy shine and specular highlights. Add a very subtle matte powder-coat texture. Do not change the shape, background, lighting, or composition."
+
+**Color change:**
+> "Change the lamp color from black to deep forest green matte. Keep the exact same shape, proportions, background, and lighting. The surface should be matte, not glossy."
+
+**Background cleanup:**
+> "Make ONLY the wall more white and clean. Do not change the product, lighting, reflections, shadows, or anything else. The wall should become pure gallery white."
+
+### Critical rules for image editing prompts
+- **Always anchor the color explicitly** — if you say "matte clay texture" Gemini will drift the color to grey/beige. Say: "color MUST stay [COLOR] — NOT grey, NOT beige"
+- **Always say what NOT to change** — list shape, background, lighting, composition as locked
+- **Never use vague style words** like "artisanal" or "raw" without a color lock — they cause color drift
+- Outputs save as WebP, 400–800 KB target, max 2400px
