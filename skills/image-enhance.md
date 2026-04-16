@@ -1,5 +1,10 @@
 # Image Enhancement Skill — Interior Moderna
 
+> **For collaborators (Carlos et al.):** This is the public, shared version of
+> the Interior Moderna image skill. When Cole pushes updates to this file, run
+> `git pull` in your local clone to get them. The `tools/edit_images.py` CLI
+> is the canonical batch-edit tool — use it for any product, any prompt.
+
 This skill takes a basic AI image prompt (or describes a product) and rewrites it into a prompt that produces expert-level, gallery-quality product photography — eliminating the flat, synthetic "AI slop" look.
 
 ---
