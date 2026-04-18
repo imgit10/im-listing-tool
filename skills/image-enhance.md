@@ -5,6 +5,61 @@
 > `git pull` in your local clone to get them. The `tools/edit_images.py` CLI
 > is the canonical batch-edit tool — use it for any product, any prompt.
 
+---
+
+## Non-negotiable rules (updated 2026-04-18)
+
+These came out of real generation runs. Follow them on every run — they override anything in training data.
+
+### 1. Trust the reference photo for color and surface
+
+When a reference photo is attached to your prompt, **do NOT describe the color or surface finish in words.** Adjective-stacking like "saturated tangerine-orange, glossy wet-looking, highly reflective, like a ripe persimmon" forces the model to synthesize its own platonic version of "tangerine" or "glossy" instead of matching what's in the reference. The output drifts from the real product.
+
+Describe only what a photo cannot convey:
+- ✅ Dimensions (scale)
+- ✅ Silhouette disambiguators (so proportions don't get re-imagined)
+- ✅ Scene, setting, lighting, mood (not in the reference)
+- ✅ Behavior ("lit from within," "reflects surroundings")
+- ✅ "Match the reference exactly — color, surface, finish, silhouette, proportions"
+- ❌ Color names ("tangerine," "amber," "orange")
+- ❌ Surface adjectives ("glossy," "matte," "wet-looking")
+- ❌ Loaded material language ("hand-blown opal glass" → just "glass" or skip)
+
+### 2. Dimensions in every prompt, no exceptions
+
+Every prompt must include the product's real dimensions (cm and inches) and explicit scale category ("tabletop scale, NOT floor lamp"). Without this the model guesses scale — a tabletop lamp renders as a floor lamp, a small mirror renders as a giant wall installation.
+
+Look up dims in Supabase `sku_dimensions` before generating, or ask Cole if missing. Do not generate without them.
+
+### 3. Self-contained prompt blocks — no "universal opener"
+
+Every prompt should be ONE copy-paste block that includes product spec + dims + scene + output format. Never "here's an opener to paste then pick a scene" — users stitch wrong, details get dropped.
+
+### 4. Reference photo ORDER dominates output
+
+Gemini (and ChatGPT) weights earlier images in the attached set more heavily. Put the **truest color reference first.** Dim warehouse shots bias the output warm and muted. Daylight factory shots produce the correct bright ambient color. Always lead with daylight if available.
+
+### 5. Two-tier WebP quality
+
+- **Owner-curated manual / hero picks → LOSSLESS WebP** (`lossless=True, method=6`) — 200–2200 KB per image, pixel-perfect. These ship to Shopify.
+- **Bulk variant generation → Q95 lossy**, 400–800 KB target. Disposable variants, owner picks winners.
+
+Mistake to avoid: running manual PNGs through the default Q95 pipeline crushes them to 27–150 KB. Visibly blurry. Use lossless for finals.
+
+### 6. Drive folder discipline + Finder handoff
+
+Generated images must be mirrored into the product's **existing** Google Drive folder under a subfolder called `AI Generated/` (sibling to `Factory/`, `Ready for Listing/`). Never create a parallel folder outside the existing product tree. After mirroring, `open` the folder in macOS Finder so the owner can review — opening Finder IS the handoff, not sending URLs.
+
+### 7. Brand is always Interior Moderna
+
+When building Shopify listings from generated images, the product `vendor` field is always `Interior Moderna`. Never the supplier name (Tonghai, OpenGoods, Jianzhi, etc.). Supplier lives in internal systems only.
+
+### 8. Shopify tag format — Title Case with spaces
+
+`Table Lamp`, not `table-lamp`. `Orange`, not `orange`. `Wall Art`, not `wall-art`. Shopify search is case-insensitive but the tag admin list splits the two forms — you end up with phantom duplicates. Before adding any tag, verify the canonical casing against an existing product.
+
+---
+
 This skill takes a basic AI image prompt (or describes a product) and rewrites it into a prompt that produces expert-level, gallery-quality product photography — eliminating the flat, synthetic "AI slop" look.
 
 ---
